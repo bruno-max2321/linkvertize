@@ -1,61 +1,50 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Redirige con Linkvertise</title>
-
-  <!-- 1) Script oficial de Linkvertise -->
+  <title>Redirigiendo con Linkvertise...</title>
+  <!-- Script oficial de Linkvertise -->
   <script src="https://publisher.linkvertise.com/cdn/linkvertise.js"></script>
-
-  <!-- 2) Inicializa Linkvertise -->
-  <script>
-    // Reemplaza 471516 con tu UserID de Linkvertise
-    linkvertise(471516, {
-      whitelist: [],   // lista blanca (vací­a = todos los enlaces)
-      blacklist: []    // lista negra (vací­a = ninguno excluido)
-    });
-  </script>
-
-  <!-- 3) Crea dinámicamente el enlace de Mega -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const params = new URLSearchParams(window.location.search);
       const target = params.get("url");
+
       if (!target) {
         document.body.innerHTML = "<p>Error: falta el parámetro <code>url</code>.</p>";
         return;
       }
+
+      // Insertar el enlace de destino con la clase especial
       const link = document.createElement("a");
       link.href = target;
       link.className = "linkvertise-link";
       link.textContent = "Descarga aquí";
-      link.style.display = "inline-block";
-      link.style.margin = "2rem auto";
-      link.style.fontSize = "1.2rem";
-      document.body.innerHTML = "";  // limpia mensaje inicial
+      link.style.display = "block";
+      link.style.margin = "4rem auto";
+      link.style.fontSize = "1.5rem";
+      link.style.textAlign = "center";
       document.body.appendChild(link);
+
+      // Ejecuta Linkvertise con whitelist explícita
+      linkvertise(471516, {
+        whitelist: ["linkvertize.vercel.app"],
+        blacklist: []
+      });
     });
   </script>
-
-  <!-- 4) Estilos básicos -->
   <style>
     body {
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
       text-align: center;
-      padding: 2rem;
-      background: #f9f9f9;
-    }
-    p { color: #555; }
-    a.linkvertise-link {
-      text-decoration: none;
-      color: #007bff;
-      font-weight: bold;
+      background-color: #f5f5f5;
+      color: #333;
+      padding-top: 4rem;
     }
   </style>
 </head>
 <body>
-  <p>Cargando enlace…</p>
+  <p>Cargando enlace...</p>
 </body>
 </html>
+
