@@ -2,66 +2,23 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Redirigiendo…</title>
 
-  <!-- Full Script API oficial de Linkvertise -->
+  <!-- 1) Snippet oficial de Linkvertise, justo en el head -->
   <script src="https://publisher.linkvertise.com/cdn/linkvertise.js" async></script>
   <script>
-    // Inicializa Linkvertise con tu User ID
-    // Monetiza todos los enlaces externos; no hay whitelist ni blacklist
+    // 2) Inicializas la monetización para TODOS los <a> de la página
     linkvertise(471516, {
-      whitelist: [],   // deja vacío para monetizar todo
-      blacklist: []    // deja vacío si no quieres excluir nada
+      whitelist: [],   // Si lo dejas vacío monetiza todas las URLs externas
+      blacklist: []    // O pon aquí tu propio dominio para no monetizar enlaces internos
     });
   </script>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 3rem 1rem;
-      background: #fafafa;
-      color: #333;
-    }
-    a.btn {
-      display: inline-block;
-      margin-top: 2rem;
-      padding: 1rem 2rem;
-      font-size: 1.25rem;
-      text-decoration: none;
-      border-radius: 4px;
-      background: #0070f3;
-      color: white;
-    }
-  </style>
 </head>
 <body>
   <h1>Preparando tu descarga…</h1>
-  <p id="status">Un momento, por favor.</p>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // 1) Sacar la URL de Mega del parámetro ?url=
-      const params = new URLSearchParams(window.location.search);
-      const target = params.get("url");
-      if (!target) {
-        document.getElementById("status").textContent =
-          "Error: falta parámetro ?url=";
-        return;
-      }
-
-      // 2) Crear el enlace que Linkvertise monetizará
-      const link = document.createElement("a");
-      link.href = target;
-      link.className = "btn";
-      link.textContent = "Descarga aquí";
-      document.body.appendChild(link);
-
-      // 3) (Opcional) auto-clic tras 1.5 s para evitar clic manual
-      setTimeout(() => link.click(), 1500);
-    });
-  </script>
+  <!-- 3) En algún punto de tu body inyectas (o ya tienes) un <a> con href al Mega -->
+  <a href="https://mega.nz/…" class="btn">Descarga aquí</a>
 </body>
 </html>
 
