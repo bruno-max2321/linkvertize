@@ -2,49 +2,84 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Redirigiendo con Linkvertise...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirigiendo...</title>
+
+  <!-- Open Graph / Twitter Card -->
+  <meta property="og:title" content="Tu descarga está en camino" />
+  <meta property="og:description" content="Un momento, estamos preparando tu archivo." />
+  <meta property="og:image" content="https://link-center.net/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
   <!-- Script oficial de Linkvertise -->
   <script src="https://publisher.linkvertise.com/cdn/linkvertise.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const params = new URLSearchParams(window.location.search);
-      const target = params.get("url");
-
-      if (!target) {
-        document.body.innerHTML = "<p>Error: falta el parámetro <code>url</code>.</p>";
-        return;
-      }
-
-      // Insertar el enlace de destino con la clase especial
-      const link = document.createElement("a");
-      link.href = target;
-      link.className = "linkvertise-link";
-      link.textContent = "Descarga aquí";
-      link.style.display = "block";
-      link.style.margin = "4rem auto";
-      link.style.fontSize = "1.5rem";
-      link.style.textAlign = "center";
-      document.body.appendChild(link);
-
-      // Ejecuta Linkvertise con whitelist explícita
-      linkvertise(471516, {
-        whitelist: ["linkvertize.vercel.app"],
-        blacklist: []
-      });
+    // Inicializa Linkvertise con tu User ID y evita bucles en tu propio dominio
+    linkvertise(471516, {
+      whitelist: [], 
+      blacklist: ["link-center.net"]
     });
   </script>
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f5f5f5;
+    body { 
+      font-family: Arial, sans-serif; 
+      text-align: center; 
+      padding: 3rem 1rem; 
+      background: #fafafa; 
       color: #333;
-      padding-top: 4rem;
+    }
+    a.btn {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      font-size: 1.25rem;
+      text-decoration: none;
+      border-radius: 4px;
+      background: #0070f3;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <p>Cargando enlace...</p>
+  <h1>Preparando tu descarga…</h1>
+  <p id="status">Un momento, por favor.</p>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1) Intenta extraer la URL desde el querystring ?url=
+      const params = new URLSearchParams(window.location.search);
+      let target = params.get("url");
+
+      // 2) Si no viene en ?url=, busca en el path: /471516/<slugBase64>
+      if (!target) {
+        const parts = window.location.pathname.split("/").filter(Boolean);
+        // parts[0] = "471516", parts[1] = "<slugBase64>"
+        if (parts.length === 2 && parts[0] === "471516") {
+          try {
+            target = atob(parts[1]);  // decodifica base64
+          } catch (e) {
+            console.error("Error decodificando slug:", e);
+          }
+        }
+      }
+
+      if (!target) {
+        document.getElementById("status").textContent =
+          "Error: no se encontró el parámetro URL.";
+        return;
+      }
+
+      // 3) Crea el botón de descarga que Linkvertise interceptará
+      const link = document.createElement("a");
+      link.href = target;
+      link.className = "linkvertise-link btn";
+      link.textContent = "Descarga aquí";
+      document.body.appendChild(link);
+
+      // 4) (Opcional) intenta auto-clic tras 1.5 s para saltar el clic manual
+      setTimeout(() => link.click(), 1500);
+    });
+  </script>
 </body>
 </html>
-
