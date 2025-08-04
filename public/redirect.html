@@ -3,22 +3,17 @@
 <head>
   <meta charset="UTF-8"/>
   <title>Redirigiendo…</title>
-
-  <!-- 1) Snippet oficial de Linkvertise, justo en el head -->
   <script src="https://publisher.linkvertise.com/cdn/linkvertise.js" async></script>
   <script>
-    // 2) Inicializas la monetización para TODOS los <a> de la página
     linkvertise(471516, {
-      whitelist: [],   // Si lo dejas vacío monetiza todas las URLs externas
-      blacklist: []    // O pon aquí tu propio dominio para no monetizar enlaces internos
+      whitelist: [],
+      blacklist: []
     });
   </script>
 </head>
 <body>
   <h1>Preparando tu descarga…</h1>
-
-  <!-- 3) En algún punto de tu body inyectas (o ya tienes) un <a> con href al Mega -->
-  <a href="https://mega.nz/…" class="btn">Descarga aquí</a>
+  <a href="https://mega.nz/fake-example" class="btn">Descarga aquí</a>
 </body>
 </html>
 
